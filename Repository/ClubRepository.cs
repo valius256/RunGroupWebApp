@@ -24,6 +24,7 @@ namespace RunGroupWebApp.Repository
         public bool Delete(Club club)
         {
             _context.Remove(club);
+            return Save();
         }
 
         public async Task<IEnumerable<Club>> GetAll()
@@ -36,19 +37,21 @@ namespace RunGroupWebApp.Repository
             return await _context.Clubs.FirstOrDefaultAsync(i => i.Id == id);
         }
 
-        public Task<IEnumerable<Club>> GetClubByCity(string city)
+        public async Task<IEnumerable<Club>> GetClubByCity(string city)
         {
-            throw new NotImplementedException();
+            return await _context.Clubs.Where(i => i.Address.City.Contains(city)).ToListAsync();
         }
 
         public bool Save()
         {
-            throw new NotImplementedException();
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
 
         public bool Update(Club club)
         {
-            throw new NotImplementedException();
+            _context.Update(club);
+            return Save();
         }
     }
 }
